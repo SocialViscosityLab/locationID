@@ -2,12 +2,12 @@
 var x = document.getElementById("demo");
 
 //negative location
-//var lat = 40.104471;
-//var lon = -88.231053;
+var lat = 40.104471;
+var lon = -88.231053;
 
 //possitive location  
-var lat = 40.102243;
-var lon = -88.233872;
+//var lat = 40.102243;
+//var lon = -88.233872;
 var maxDist = 500;
 
 
@@ -26,18 +26,18 @@ function showIfPosition(position) {
   if(isInLocation(lat, lon, 500, position)){
     x.setAttribute('id','positive')
     
-    content = content + "<br> <h1>Yes I at the latitude: "+lat+" and the longitude: "+lon+"!</h1> "
+    content = content + "<br> <h1>Yes, I am at the latitude: "+lat+" and the longitude: "+lon+"!</h1> "
 
   }else{
     x.setAttribute('id','negative')
-    content = content + "<br> <h1>No I'm not :c </h1> "
+    content = content + "<br> <h1>No, I'm somewhere else :c </h1> "
   }
 
   x.innerHTML = content
 }
 
 
-function isInLocation(lat, lon, maxDist,position){
+function isInLocation(lat, lon, maxDist, position){
 //Distance code taken from: https://www.movable-type.co.uk/scripts/latlong.html
 
   var lat1 = lat;
@@ -71,7 +71,6 @@ function isInLocation(lat, lon, maxDist,position){
 var tid = setInterval( function () {
     if ( document.readyState !== 'complete' ) return;
     clearInterval( tid );      
-
     getLocation();
  
     // do your work
