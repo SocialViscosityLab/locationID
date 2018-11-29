@@ -21,9 +21,12 @@
    crossorigin=""></script>
 
   </head>
+
+
   <body>
 
     <div class="container">
+
       <div class="row">
         <h1>Smart Bicycles Demo</h1>
         <h4>Design for social viscosity lab</h4>
@@ -31,42 +34,77 @@
       </div>
 
       <div class="row">
-        <section><a name="B"></a>
-          <div class= "column-sm-1"></div>
-          <div class= "column-sm-10">
+ 
+          <div class= "col-sm-12">
 
-            <p> Map of routes and locations</p>
-            
-            <div id="mapid" style="width: 100%; height: 400px;">></div>
-            
-            <script type="text/javascript">
-              var mymap = L.map('mapid').setView([40.10250,-88.23425], 17);
+            <section><a name="A"></a>
 
-              L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                  maxZoom: 20,
-                  id: 'mapbox.streets',
-                  accessToken: 'sk.eyJ1IjoianNhbGFtIiwiYSI6ImNqcDI3eG9yaDAyYzMzcXJ0ZWd3d3g3bTcifQ.o2q4YfWOqzAg9rak5ua-MA'
-              }).addTo(mymap);
-
-              var d4svMarker = L.marker([40.10250,-88.23425]).addTo(mymap);
-              d4svMarker.bindPopup("<b>D</b>4<b>SV</b><br>Research lab").openPopup();
+              <div id="mapid" style="width: 100%; height: 350px;">></div>
               
-            </script>
-            
-            <p> Map provider: <a href= "https://www.openstreetmap.org">© OpenStreetMap contributors</a> Map Library: Leaflet, Tile provider: MapBox</p>
+              <script type="text/javascript">
+                var mymap = L.map('mapid').setView([40.10250,-88.23425], 17);
 
-            <!--  Location Generator -->
-            <hr>
-            <div> Distance between origin and destination:
-            <p id="p1">Hello World!</p></div>
+                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 20,
+                    id: 'mapbox.streets',
+                    accessToken: 'sk.eyJ1IjoianNhbGFtIiwiYSI6ImNqcDI3eG9yaDAyYzMzcXJ0ZWd3d3g3bTcifQ.o2q4YfWOqzAg9rak5ua-MA'
+                }).addTo(mymap);
 
-            <script src="locationGenerator.js"></script>
-          
+                var d4svMarker = L.marker([40.10250,-88.23425]).addTo(mymap);
+                d4svMarker.bindPopup("<b>D</b>4<b>SV</b><br>Research lab").openPopup();
+              </script>
+            </section>
           </div>
-          <div class= "column-sm-1"></div>
-        </section>
       </div>
-    </div>   
+    </div> <!-- close container -->
+
+    <div class="container">
+      <div class = "row">
+        <div class= "col-sm-1"></div><!-- Close column -->
+        
+        <div class= "col-sm-5">
+          <h4> Route builder</h4>
+          <form>
+            Origin:<br>
+            <input type="text" name="origin">
+            <br>
+            Next point:<br>
+            <input type="text" name="next_point">
+            <br><br>
+            <input type="submit">
+          </form> 
+          <br>
+          <div> Distance between origin and next point:
+
+          <p id="p1">Hello World!</p></div>
+
+          <script src="locationGenerator.js"></script>
+        </div><!-- Close column -->
+
+        <div class= "col-sm-5">
+          <h4> Route fraction calculator</h4>
+          <form>
+            Ellapsed time on route:<br>
+            <input type="text" name="ellapsedTime">
+            <br>
+            Speed:<br>
+            <input type="text" name="speed">
+            <br><br>
+            <input type="submit">
+          </form> 
+
+        </div><!-- Close column -->
+        
+        <div class= "col-sm-1"></div> <!-- Close column -->
+      
+      </div> <!-- Close row -->
+    
+    </div> <!--close container -->
   </body>
 </html>
+
+
+
+ <!--  Location Generator -->
+
