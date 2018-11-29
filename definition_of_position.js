@@ -2,7 +2,7 @@
 var x = document.getElementById("demo");
 
 //negative location
-var lat = 40.104471;
+var lat = 40.104407;
 var lon = -88.231053;
 
 //possitive location  
@@ -57,6 +57,8 @@ function isInLocation(lat, lon, maxDist, position){
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
   var d = R * c;
+
+  console.log(d);
 
   if(d<= maxDist){
     console.log("entro");
