@@ -3,60 +3,70 @@
   <head>
   <title>My tracker map demo</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <style>
-      </style>
+
+    <!-- Bootsatrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Leaflet map css -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+
+   <link rel="stylesheet" type="text/css" href="css/styleSheet.css">
+
+   <!-- Leaflet's JS -->
+ <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+   integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+   crossorigin=""></script>
+
   </head>
   <body>
 
-    <h1>POSITION DEMO</h1>
-    <!--The element that will be modified -->
-    <div id="demo">
-      <h2>Am I at home?</h2>
+    <div class="container">
+      <div class="row">
+        <h1>Smart Bicycles Demo</h1>
+        <h4>Design for social viscosity lab</h4>
+        <hr> 
+      </div>
 
-    </div>
+      <div class="row">
+        <section><a name="B"></a>
+          <div class= "column-sm-1"></div>
+          <div class= "column-sm-10">
 
+            <p> Map of routes and locations</p>
+            
+            <div id="mapid" style="width: 100%; height: 400px;">></div>
+            
+            <script type="text/javascript">
+              var mymap = L.map('mapid').setView([40.10250,-88.23425], 17);
 
-  <style>
-    html {
-      box-sizing: border_box;
-      background: #ffc600;
-      font-family: 'Open Sans', sans-serif;
-      font-size: 20px;
-      font-weight: 200;
-    }
-    body{
-      margin: 0;
-      padding: 0;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
+              L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                  maxZoom: 20,
+                  id: 'mapbox.streets',
+                  accessToken: 'sk.eyJ1IjoianNhbGFtIiwiYSI6ImNqcDI3eG9yaDAyYzMzcXJ0ZWd3d3g3bTcifQ.o2q4YfWOqzAg9rak5ua-MA'
+              }).addTo(mymap);
 
-    h1{
-      text-align: center;
-    }
-    h2{
-      text-align: center;
-      color: white;
-    }
+              var d4svMarker = L.marker([40.10250,-88.23425]).addTo(mymap);
+              d4svMarker.bindPopup("<b>D</b>4<b>SV</b><br>Research lab").openPopup();
+              
+            </script>
+            
+            <p> Map provider: <a href= "https://www.openstreetmap.org">© OpenStreetMap contributors</a> Map Library: Leaflet, Tile provider: MapBox</p>
 
-    #positive{
-      background: green;
-    }
+            <!--  Location Generator -->
+            <hr>
+            <div> Distance between origin and destination:
+            <p id="p1">Hello World!</p></div>
 
-    #negative{
-      background: red;
-    }
-
-    #demo{
-      height: 200px;
-      width: 200px;
-      margin: 100px;
-
-    }
-
-  </style>
-
-  <script src="locationGenerator.js"></script>
+            <script src="locationGenerator.js"></script>
+          
+          </div>
+          <div class= "column-sm-1"></div>
+        </section>
+      </div>
+    </div>   
   </body>
 </html>

@@ -1,6 +1,8 @@
 
 var x = document.getElementById("demo");
 
+var distanceHTML = document.getElementById("p1");
+
 
 /*function getCurrentLocation() {
   if (navigator.geolocation) {
@@ -43,8 +45,7 @@ function getDistance(startCoords, endCoords){
 
   let d = R * c;
 
-  console.log("distance to: " + d);
-
+  distanceHTML.innerHTML = d +" meters";
 
   return d
 }
