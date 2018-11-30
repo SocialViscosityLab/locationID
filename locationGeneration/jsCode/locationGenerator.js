@@ -1,9 +1,4 @@
 
-var x = document.getElementById("demo");
-
-var distanceHTML = document.getElementById("p1");
-
-
 /*function getCurrentLocation() {
   if (navigator.geolocation) {
       return navigator.geolocation.getCurrentPosition();
@@ -45,8 +40,6 @@ function getDistance(startCoords, endCoords){
 
   let d = R * c;
 
-  distanceHTML.innerHTML = d +" meters";
-
   return d
 }
 
@@ -56,8 +49,6 @@ function getIntermediatePoint(startCoords, endCoords, fraction){
   let lon1 = startCoords.getLonRad();
   let lat2 = endCoords.getLatRad();
   let lon2 = endCoords.getLonRad();
-
-  console.log(lat1);
 
   let R = 6371e3; // metres
 
@@ -86,38 +77,6 @@ function getTrajectoryFraction(ellapsedTime, speed, totalDistance){
 
 }
 
-class Position{
-  constructor(lat, lon){
-    this.lat = lat;
-    this.lon = lon;
-  }
-
-  getLatRad(){
-    return (this.lat * Math.PI) / 180;
-  }
-    getLonRad(){
-    return (this.lon * Math.PI) / 180;
-  }
-  convertRadToCoords(){
-    this.lat = (this.lat * 180)/Math.PI;
-    this.lon = (this.lon * 180)/Math.PI;
-
-  }
-}
   
-var tid = setInterval( function () {
-    if ( document.readyState !== 'complete' ) return;
-    clearInterval( tid );      
 
-    var goalPosition = new Position(40.110026, -88.234110);
-    //var currentPosition = new Position(getCurrentLocation().coords.latitude, getCurrentLocation().coords.longitude);
-    var currentPosition = new Position(40.110363, -88.233459);
-
-    getDistance(goalPosition, currentPosition);
-
-   // var myPosition = calculateCurrentPosition(goalPosition, currentPosition,5,60);
-
-   // console.log(myPosition);
-    // do your work
-}, 100 );
   
