@@ -1,11 +1,18 @@
 // retrieve all the gui elements
 let distanceHTML ;
-let originLat ;
-let originLon ;
-let nextPointLat ;
-let nextPointLon ;
+//let routePoints = [];
+//let routeDistances = [];
+let journey;
+let gosthSession;
+
+let currentRoute;
+let currentMap;
+
 let ellapsedTime ;
 let speed;
+let route;
+let sampleRate;
+let speedRate;
 
 // Calculate distance
 let distCalculated = false;
@@ -13,6 +20,7 @@ let distCalculated = false;
 //markers
 let originMarker;
 let nextPointMarker;
+let routeMarkers = [];
 let fractionMarker;
 
 
@@ -20,94 +28,74 @@ function setup(){
 
 	// retrieve all the gui elements
 distanceHTML = document.getElementById("p1");
-originLat = document.getElementById("originLat");
-originLon = document.getElementById("originLon");
-nextPointLat = document.getElementById("next_pointLat");
-nextPointLon = document.getElementById("next_pointLon");
 ellapsedTime = document.getElementById("ellapsedTime");
 speed = document.getElementById("speed");
+sampleRate = document.getElementById("sampleRate");
+speedRate = document.getElementById("speedRate");
+
+// Instantiate objects
+currentRoute = new Route();
+
+currentMap = new Cartography(currentRoute);
+
+// initialize map
+currentMap.setup();
 
 // Buttons
-document.getElementById("routeButton").onclick = setRouteBuilderValues;
-document.getElementById("fractionButton").onclick = setFractionCalculatorValues;
+document.getElementById("routeButton").onclick = setupRoute;
+document.getElementById("calcDist").onclick = calcDistances;
+//document.getElementById("fractionButton").onclick = calculateFractionPosition;
+document.getElementById("activateJourney").onclick = activateJourney;
+//document.getElementById("exportJSON").onclick = saveRouteJSON;
 
 }
 
 
-var setRouteBuilderValues = function(){
 
-	//console.log("origin: " + originLat.value + " " + originLon.value);
-	//console.log("nextPoint: " + nextPointLat.value + " " + nextPointLon.value);
+/*Create the route markers of the cornerpoints on the map */
+var setupRoute = function(){
 
-	// Origin Marker
-	if (originMarker == undefined){
-		originMarker = L.marker([originLat.value,originLon.value]).addTo(mymap);
-		originMarker.bindPopup("Origin").openPopup();
-	} else {
-		var newLatLng = new L.LatLng(originLat.value,originLon.value);
-		originMarker.setLatLng(newLatLng);
-	}
-	
-	// Next point marker
-	if (nextPointMarker == undefined){
-		nextPointMarker = L.marker([nextPointLat.value,nextPointLon.value]).addTo(mymap);
-		nextPointMarker.bindPopup("Next point").openPopup();
-	} else {
-		var newLatLng = new L.LatLng(nextPointLat.value,nextPointLon.value);
-		nextPointMarker.setLatLng(newLatLng);
-	}
+	let totalRoutePoints = 5;
 
-	// Waits until the page detects the position of the current device
-	let tid = setInterval( function () {
-    if ( document.readyState !== 'complete' ) return;
-    clearInterval( tid );      
+	// initialize route
+	currentRoute.initiateRoutePoints(totalRoutePoints);
 
-	let goalPosition = new Position(originLat.value, originLon.value);
+	// plot route on map
+	currentMap.plotRouteCornerPoints();
 
-    let currentPosition = new Position(nextPointLat.value, nextPointLon.value);
+} 
 
-    // Calculates and sets the distance value on html page
-    distanceHTML.innerHTML = getDistance(goalPosition, currentPosition).toPrecision(4) + " m.";
+/*Calculate distances between the corner points of a map*/
+var calcDistances = function(){
 
-    distCalculated = true;
+	currentRoute.calcDistances();
 
-}, 100 );
+	distanceHTML.innerHTML = currentRoute.distancesToString();
 
 }
 
-var setFractionCalculatorValues = function(){
-	//console.log("fraction " + ellapsedTime.value);
-	//console.log("speed " + speed.value);
+var activateJourney = function(){
 
-	let startCoords = new Position(originLat.value, originLon.value);
+	if (currentRoute.routePoints.length > 0){
 
-    let endCoords = new Position(nextPointLat.value, nextPointLon.value);
+		journey = new Journey(currentRoute);
 
+		// make route active 
+		journey.activateRoute(true);
 
-	if (distCalculated){
+		// Create Ghost session
+		journey.addNewSession();
 
-			let currentPos = calculateCurrentPosition(startCoords, endCoords, speed.value, ellapsedTime.value);
+		// set Ghost session dataPoints
+		journey.setGhostSessionPoints(speedRate, sampleRate, true);
 
-		if (fractionMarker == undefined){
-			fractionMarker = L.marker([currentPos.lat,currentPos.lon]).addTo(mymap);
-			fractionMarker.bindPopup("Fraction").openPopup();
+		//plot ghost Session
+		currentMap.plotSessionDataPoints(journey, 0);
 
-		} else {
-			var newLatLng = new L.LatLng(currentPos.lat,currentPos.lon);
-			fractionMarker.setLatLng(newLatLng);
-		}
-
-	} else {
-
-		setRouteBuilderValues();
-
-			let currentPos = calculateCurrentPosition(startCoords, endCoords, speed.value, ellapsedTime.value);
-
-		fractionMarker = L.marker([currentPos.lat,currentPos.lon]).addTo(mymap);
-		fractionMarker.bindPopup("Fraction").openPopup();
+	}else{
+		
+		alert("Please setup route first");
 	}
-
-	
 }
 
 

@@ -7,9 +7,60 @@
   }
 }*/
 
+/*
+startCoords: position.js
+endCoords: position.js
+speed: meters/second
+sampleRate: timeframe in the same units as time units udes in speed 
+*/
+function calculateStepsBetweenPositions(startCoords, endCoords, speed, sampleRate, lastTimeStamp){
+
+  let rtn = [];
+
+  // 0 add the corner point
+  let tempDataPoint = new DataPoint(0, startCoords, speed, lastTimeStamp);
+
+  rtn.push(tempDataPoint);
+
+  // 1 calculate the distance between the startCoords and endCoords. The distance is calculated in meters.
+  let distAtoB = getDistance(startCoords, endCoords);
+  
+  // 2 estimate the duration to get from startCoords to endCoords at the given speed
+  let duration = distAtoB / speed;
+
+  // 3 generate as many positions as numbers of samples using as ellapsedTime the agregation of time units
+  let count = 1;
+  while(duration > sampleRate){
+
+    let tempPos = calculateCurrentPosition(startCoords, endCoords, speed, sampleRate * count);
+
+    let timeStamp = sampleRate * count;
+    
+    if (lastTimeStamp != undefined){
+
+      timeStamp = timeStamp + lastTimeStamp;
+    } 
+
+    tempDataPoint = new DataPoint(0, tempPos, speed, timeStamp);
+
+    // 4 store the positions in a collection 
+    rtn.push(tempDataPoint);
+
+    duration -= sampleRate;
+    
+    count ++;
+  }
+
+  return rtn;
+}
+
+
 function calculateCurrentPosition(startCoords, endCoords, speed, ellapsedTime) {
+
   let distance = getDistance(startCoords, endCoords);
+  
   let fraction = getTrajectoryFraction(ellapsedTime, speed, distance);
+  
   return getIntermediatePoint(startCoords, endCoords, fraction);
 
 }

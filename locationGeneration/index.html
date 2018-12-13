@@ -23,8 +23,13 @@
   <!-- GUI Controller -->
   <script src = "libs/p5.js" type="text/javascript"></script>
   <script src = "jsCode/position.js" type="text/javascript"></script>
-  <script src = "jsCode/locationGenerator.js" type="text/javascript"></script>
+  <script src = "jsCode/locationTools.js" type="text/javascript"></script>
   <script src = "jsCode/main.js" type="text/javascript"></script>
+  <script src = "jsCode/route.js" type="text/javascript"></script>
+  <script src = "jsCode/dataPoint.js" type="text/javascript"></script>
+  <script src = "jsCode/journey.js" type="text/javascript"></script>
+  <script src = "jsCode/session.js" type="text/javascript"></script>
+  <script src = "jsCode/mapCode/map.js" type="text/javascript"></script>
 
 </head>
 
@@ -46,68 +51,83 @@
 
           <section><a name="A"></a>
 
-            <div id="mapid" style="width: 100%; height: 350px;">></div>
+            <div id="mapid" style="width: 100%; height: 450px;">></div>
             
-            <script type="text/javascript">
-              var mymap = L.map('mapid').setView([40.10250,-88.23425], 17);
-
-              L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                  maxZoom: 20,
-                  id: 'mapbox.streets',
-                  accessToken: 'sk.eyJ1IjoianNhbGFtIiwiYSI6ImNqcDI3eG9yaDAyYzMzcXJ0ZWd3d3g3bTcifQ.o2q4YfWOqzAg9rak5ua-MA'
-              }).addTo(mymap);
-
-              var d4svMarker = L.marker([40.10250,-88.23425]).addTo(mymap);
-              d4svMarker.bindPopup("<b>D</b>4<b>SV</b><br>Research lab").openPopup();
-            </script>
           </section>
         </div>
     </div>
   </div> <!-- close container -->
 
-
   <div class="container"> <!--- The input boxes container -->
     <hr>
     <div class = "row">
-      <div class= "col-sm-1"></div><!-- Close column -->
       
       <div class= "col-sm-5">
         <h4> Route builder</h4>
-          Origin:<br>
-          Lat
-          <input id = "originLat" type="number" step="0.0000001" value= "40.10150">
-          Lon
-          <input id = "originLon" type="number" step="0.0000001" value= "-88.23415">
-          <br><br>
-          Next point:<br>
-          Lat
-          <input id = "next_pointLat" type="number" step="0.0000001" value= "40.10150">
-          Lon
-          <input id = "next_pointLon" type="number" step="0.0000001" value= "-88.2347379">
-          <br><br>
-          <input id = "routeButton" type="submit">
-        <br>
-        <br>
-        <div> Distance between origin and next point:
+        Origin:<br>
+        Lat
+        <input id = "coordPointLat0" type="number" step="0.0001" value= "40.10146">
+        Lon
+        <input id = "coordPointLon0" type="number" step="0.0001" value= "-88.23445">
+        <br><br>
+        Next point:<br>
+        Lat
+        <input id = "coordPointLat1" type="number" step="0.0001" value= "40.10143">
+        Lon
+        <input id = "coordPointLon1" type="number" step="0.0001" value= "-88.23860">
+        <br><br>
+        
+        Next point:<br>
+        Lat
+        <input id = "coordPointLat2" type="number" step="0.0001" value= "40.10409">
+        Lon
+        <input id = "coordPointLon2" type="number" step="0.0001" value= "-88.23863">
+        <br><br>
 
-        <p id="p1"><b>--</b></p></div>
+        Next point:<br>
+        Lat
+        <input id = "coordPointLat3" type="number" step="0.0001" value= "40.10409">
+        Lon
+        <input id = "coordPointLon3" type="number" step="0.0001" value= "-88.23345">
+        <br><br>
+
+        Next point:<br>
+        Lat
+        <input id = "coordPointLat4" type="number" step="0.0001" value= "40.10146">
+        Lon
+        <input id = "coordPointLon4" type="number" step="0.0001" value= "-88.233385">
+        <br><br>
+
+        <button id = "routeButton" type = "button">Setup route</button> <button id = "calcDist" type = "button">Calculate dist.</button>
+        <br>
+        <br>
+        <div><p id="p1"><b>--</b></p></div>
 
       </div><!-- Close column -->
 
-      <div class= "col-sm-5">
-        <h4> Route fraction calculator</h4>
-          Ellapsed time on route:<br>
-          <input id = "ellapsedTime" type="number" name="ellapsedTime" value = "5"> secs.
-          <br><br>
-          Speed:<br>
-          <input id = "speed" type="number" name="speed" value = "5">m/s.
-          <br><br>
-          <input id = "fractionButton" type="submit">
-
+      <div class= "col-sm-4">
+        <h4> Journey activation and ghost session setup</h4>
+        Sample rate<br>
+        <input id = "sampleRate" type = "number" name = "sampleRate" value = "10" min = "0"> secs.
+        <br><br>
+        Speed:<br>
+        <input id = "speedRate" type="number" name="speedRate" value = "5" min = "0">m/s.
+        <br><br>
+        <button id = "activateJourney" type="submit"> Activate Journey</button> 
+        <button id = "exportJSON" type = "button">Export to JSON</button>
       </div><!-- Close column -->
       
-      <div class= "col-sm-1"></div> <!-- Close column -->
+
+      <div class= "col-sm-3">
+       <h4> Session point calculator</h4>
+        Ellapsed time on route:<br>
+        <input id = "ellapsedTime" type="number" name="ellapsedTime" value = "5" min = "0"> secs.
+        <br><br>
+        Speed:<br>
+        <input id = "speed" type="number" name="speed" value = "5" min = "0">m/s.
+        <br><br>
+        <input id = "fractionButton" type="submit">
+      </div> <!-- Close column -->
     
     </div> <!-- Close row -->
   
